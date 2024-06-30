@@ -18,127 +18,161 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get('/log', (req, res) => {
-    return 'ok'
-
+    res.send('ok'); // Assurez-vous d'envoyer une réponse
 });
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-    const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('Name', email)
-        .eq('Password', password);
+        const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('Name', email)
+            .eq('Password', password);
 
-    if (error) {
-        return res.status(500).json({ message: 'Internal Server Error', error });
-    }
-    if (data.length > 0) {
-        return res.json({ message: 'Login success' });
-    } else {
-        return res.status(401).json({ message: 'Login failed. Incorrect email or password.' });
+        if (error) {
+            console.error('Supabase error:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+
+        if (data.length > 0) {
+            return res.json({ message: 'Login success' });
+        } else {
+            return res.status(401).json({ message: 'Login failed. Incorrect email or password.' });
+        }
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
 });
 
 app.post('/register', async (req, res) => {
-    const { name, password } = req.body;
+    try {
+        const { name, password } = req.body;
 
-    const { error } = await supabase
-        .from('users')
-        .insert([{ Name: name, Password: password }]);
+        const { error } = await supabase
+            .from('users')
+            .insert([{ Name: name, Password: password }]);
 
-    if (error) {
-        console.error('Error executing SQL query:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+        return res.json({ message: 'Registration successful' });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
-    return res.json({ message: 'Registration successful' });
 });
 
 app.post('/win', async (req, res) => {
-    const { username } = req.body;
+    try {
+        const { username } = req.body;
 
-    const { data, error } = await supabase
-        .from('game_infos')
-        .select('*')
-        .eq('player', username)
-        .eq('result', 'win');
+        const { data, error } = await supabase
+            .from('game_infos')
+            .select('*')
+            .eq('player', username)
+            .eq('result', 'win');
 
-    if (error) {
-        console.error('Error executing SQL query:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+
+        const wins = data.length;
+        return res.json({ wins });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
-
-    const wins = data.length;
-    return res.json({ wins });
 });
 
 app.post('/draw', async (req, res) => {
-    const { username } = req.body;
+    try {
+        const { username } = req.body;
 
-    const { data, error } = await supabase
-        .from('game_infos')
-        .select('*')
-        .eq('player', username)
-        .eq('result', 'draw');
+        const { data, error } = await supabase
+            .from('game_infos')
+            .select('*')
+            .eq('player', username)
+            .eq('result', 'draw');
 
-    if (error) {
-        console.error('Error executing SQL query:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+
+        const draws = data.length;
+        return res.json({ draws });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
-
-    const draws = data.length;
-    return res.json({ draws });
 });
 
 app.post('/lose', async (req, res) => {
-    const { username } = req.body;
+    try {
+        const { username } = req.body;
 
-    const { data, error } = await supabase
-        .from('game_infos')
-        .select('*')
-        .eq('player', username)
-        .eq('result', 'lose');
+        const { data, error } = await supabase
+            .from('game_infos')
+            .select('*')
+            .eq('player', username)
+            .eq('result', 'lose');
 
-    if (error) {
-        console.error('Error executing SQL query:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+
+        const losses = data.length;
+        return res.json({ losses });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
-
-    const losses = data.length;
-    return res.json({ losses });
 });
 
 app.post('/history', async (req, res) => {
-    const { username } = req.body;
+    try {
+        const { username } = req.body;
 
-    const { data, error } = await supabase
-        .from('game_infos')
-        .select('Id, result, date, score')
-        .eq('player', username)
-        .order('Id', { ascending: false });
+        const { data, error } = await supabase
+            .from('game_infos')
+            .select('Id, result, date, score')
+            .eq('player', username)
+            .order('Id', { ascending: false });
 
-    if (error) {
-        console.error('Error executing SQL query:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+        return res.json({ history: data });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
-    return res.json({ history: data });
 });
 
 app.post('/save-game', async (req, res) => {
-    const { date, user, result, score } = req.body;
+    try {
+        const { date, user, result, score } = req.body;
 
-    const { error } = await supabase
-        .from('game_infos')
-        .insert([{ date, player: user, result, score }]);
+        const { error } = await supabase
+            .from('game_infos')
+            .insert([{ date, player: user, result, score }]);
 
-    if (error) {
-        console.error('Error executing SQL query:', error);
-        return res.status(500).json({ message: 'Internal Server Error', error });
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+        return res.json({ message: 'Game data saved successfully' });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
-    return res.json({ message: 'Game data saved successfully' });
 });
-
-
 
 module.exports = app;
