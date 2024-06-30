@@ -8,8 +8,14 @@ const supabaseUrl = 'https://gaadrwigaogjwzuksvvf.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdhYWRyd2lnYW9nand6dWtzdnZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk3NDI5OTgsImV4cCI6MjAzNTMxODk5OH0.WnRdUq2JYkH5UxwtVNPmcFFsqswuyt7d4hJNoVmfH8c';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Configurer CORS pour permettre l'accès à partir de votre frontend
+const corsOptions = {
+    origin: 'https://online-game-iota.vercel.app', // Remplacez par l'URL de votre frontend déployé
+    optionsSuccessStatus: 200 // Pour les navigateurs anciens supportant pas bien les requêtes PUT/DELETE
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cors());
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -17,8 +23,8 @@ app.post('/login', async (req, res) => {
     const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('name', email)
-        .eq('password', password);
+        .eq('Name', email)
+        .eq('Password', password);
 
     if (error) {
         return res.status(500).json({ message: 'Internal Server Error', error });
@@ -35,7 +41,7 @@ app.post('/register', async (req, res) => {
 
     const { error } = await supabase
         .from('users')
-        .insert([{ name: name, password: password }]);
+        .insert([{ Name: name, Password: password }]);
 
     if (error) {
         console.error('Error executing SQL query:', error);
@@ -103,9 +109,9 @@ app.post('/history', async (req, res) => {
 
     const { data, error } = await supabase
         .from('game_infos')
-        .select('id, result, date, score')
+        .select('Id, result, date, score')
         .eq('player', username)
-        .order('id', { ascending: false });
+        .order('Id', { ascending: false });
 
     if (error) {
         console.error('Error executing SQL query:', error);
