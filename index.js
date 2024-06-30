@@ -44,7 +44,7 @@ app.get('/login', async (req, res) => {
     try {
         const { error } = await supabase
             .from('users')
-            .insert([{ Name: "Yassine", Password: "password" }]);
+            .insert([{ name: "Yassine", password: "password" }]);
 
         if (error) {
             console.error('Error executing SQL query:', error);
@@ -63,7 +63,7 @@ app.post('/register', async (req, res) => {
 
         const { error } = await supabase
             .from('users')
-            .insert([{ Name: name, Password: password }]);
+            .insert([{ name: name, password: password }]);
 
         if (error) {
             console.error('Error executing SQL query:', error);
