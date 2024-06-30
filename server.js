@@ -17,6 +17,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.get('/log', async (req, res) => {
+    return 'ok'
+
+});
+
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
