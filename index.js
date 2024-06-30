@@ -17,40 +17,26 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.get('/log', async (req, res) => {
+app.post('/login', async (req, res) => {
     try {
-        const { username } = "Yassine";
+        const { email, password } = req.body;
 
         const { data, error } = await supabase
-            .from('game_infos')
-            .select('*')
-            .eq('player', username)
-            .eq('result', 'win');
-
-        if (error) {
-            console.error('Error executing SQL query:', error);
-            return res.status(500).json({ message: 'Internal Server Error', error });
-        }
-
-        const wins = data.length;
-        return res.json({ wins });
-    } catch (err) {
-        console.error('Unexpected error:', err);
-        return res.status(500).json({ message: 'Internal Server Error', error: err });
-    }
-});
-
-app.get('/login', async (req, res) => {
-    try {
-        const { error } = await supabase
             .from('users')
-            .insert([{ name: "Yassine", password: "password" }]);
+            .select('*')
+            .eq('Name', email)
+            .eq('Password', password);
 
         if (error) {
-            console.error('Error executing SQL query:', error);
+            console.error('Supabase error:', error);
             return res.status(500).json({ message: 'Internal Server Error', error });
         }
-        return res.json({ message: 'Registration successful' });
+
+        if (data.length > 0) {
+            return res.json({ message: 'Login success' });
+        } else {
+            return res.status(401).json({ message: 'Login failed. Incorrect email or password.' });
+        }
     } catch (err) {
         console.error('Unexpected error:', err);
         return res.status(500).json({ message: 'Internal Server Error', error: err });
