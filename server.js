@@ -139,6 +139,4 @@ app.post('/save-game', async (req, res) => {
     return res.json({ message: 'Game data saved successfully' });
 });
 
-app.listen(8081, () => {
-    console.log("Server listening on port 8081...");
-});
+module.exports = app;
