@@ -17,8 +17,27 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.get('/log', (req, res) => {
-    res.send('ok'); // Assurez-vous d'envoyer une réponse
+app.get('/log', async (req, res) => {
+    try {
+        const { username } = "Yassine";
+
+        const { data, error } = await supabase
+            .from('game_infos')
+            .select('*')
+            .eq('player', username)
+            .eq('result', 'win');
+
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error });
+        }
+
+        const wins = data.length;
+        return res.json({ wins });
+    } catch (err) {
+        console.error('Unexpected error:', err);
+        return res.status(500).json({ message: 'Internal Server Error', error: err });
+    }
 });
 
 app.post('/login', async (req, res) => {
