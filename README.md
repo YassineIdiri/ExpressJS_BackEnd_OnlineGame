@@ -1,5 +1,3 @@
-
-
 ### 🌐 Try it out:
 Experience the game live at: https://online-game-iota.vercel.app
 
