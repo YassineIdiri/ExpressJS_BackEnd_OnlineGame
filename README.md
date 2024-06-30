@@ -1,7 +1,7 @@
 
 <div align="center">
-## 🌐 Try it out:
-Experience the game live at: [online-game-iota.vercel.app](https://online-game-iota.vercel.app/)
+#### 🌐 Try it out:<br>
+Experience the game live at: online-game-iota.vercel.app
 </div>
 
 ### 📖 Rules
