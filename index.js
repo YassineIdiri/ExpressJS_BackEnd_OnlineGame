@@ -24,8 +24,8 @@ app.post('/login', async (req, res) => {
         const { data, error } = await supabase
             .from('users')
             .select('*')
-            .eq('Name', email)
-            .eq('Password', password);
+            .eq('name', email)
+            .eq('password', password);
 
         if (error) {
             console.error('Supabase error:', error);
