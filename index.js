@@ -40,7 +40,7 @@ app.get('/log', async (req, res) => {
     }
 });
 
-app.post('/login', async (req, res) => {
+app.get('/login', async (req, res) => {
     try {
         const { error } = await supabase
             .from('users')
