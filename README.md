@@ -1,4 +1,9 @@
-Deploy:  https://online-game-iota.vercel.app/
+
+<div align="center">
+## 🌐 Try it out:
+Experience the game live at: [online-game-iota.vercel.app](https://online-game-iota.vercel.app/)
+</div>
+
 ### 📖 Rules
 
 https://github.com/YassineIdiri/ExpressJS_Backend_OnlineGame/assets/120946916/22b02759-e667-4f3c-8662-6c01b50656b5
