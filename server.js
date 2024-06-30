@@ -17,7 +17,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.get('/log', async (req, res) => {
+app.get('/log', (req, res) => {
     return 'ok'
 
 });
