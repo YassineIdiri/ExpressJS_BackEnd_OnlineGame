@@ -1,3 +1,37 @@
+Test it: https://online-game-iota.vercel.app/
+
+Installation
+Clone the repository:
+git clone https://github.com/YassineIdiri/ExpressJS_Backend_OnlineGame.git
+cd ExpressJS_Backend_OnlineGame
+
+
+Install dependencies:
+npm install
+
+Start the development server:
+npm start
+
+
+## 🚀 Getting Started
+
+### Installation
+
+Clone the repository:
+``` bash
+git clone https://github.com/YassineIdiri/ExpressJS_Backend_OnlineGame.git
+cd ExpressJS_Backend_OnlineGame
+```
+
+Install dependencies:
+```bash
+npm install
+```
+
+ Start the development server:
+```bash
+npm start
+```
 
 ### 📖 Rules
 
