@@ -137,9 +137,9 @@ app.post('/history', async (req, res) => {
 
         const { data, error } = await supabase
             .from('game_infos')
-            .select('Id, result, date, score')
+            .select('id, result, date, score')
             .eq('player', username)
-            .order('Id', { ascending: false });
+            .order('id', { ascending: false });
 
         if (error) {
             console.error('Error executing SQL query:', error);
